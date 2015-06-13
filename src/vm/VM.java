@@ -16,6 +16,10 @@ public class VM {
 
   boolean trace = false;
 
+  public VM(Program program, int stackSize) {
+    this(program.code, program.mainip, program.dataSize, stackSize);
+  }
+
   public VM(int[] code, int main, int dataSize, int stackSize) {
     this.code = code;
     this.ip = main;
