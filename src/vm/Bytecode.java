@@ -2,24 +2,24 @@ package vm;
 
 public class Bytecode {
 
-  public static final int IADD   = 1; // int add
-  public static final int ISUB   = 2;
-  public static final int IMUL   = 3;
-  public static final int ILT    = 4; // int less than
-  public static final int IEQ    = 5; // int equal
-  public static final int BR     = 6; // branch
-  public static final int BRT    = 7; // branch if true
-  public static final int BRF    = 8; // branch if false
-  public static final int ICONST = 9; // push constant int
-  public static final int LOAD   = 10; // load from local
-  public static final int GLOAD  = 11; // load from global
-  public static final int STORE  = 12; // store in local
-  public static final int GSTORE = 13; // store in global
-  public static final int PRINT  = 14; // print stack top
-  public static final int POP    = 15; // throw away top of stack
-  public static final int HALT   = 16; // Exit program
-  public static final int CALL   = 17; // Call function
-  public static final int RET    = 18; // Return from function
+  public static final int IADD   = 1;      // Int add
+  public static final int ISUB   = 2;      // Int subtract
+  public static final int IMUL   = 3;      // Int multiply
+  public static final int ILT    = 4;      // Int less than
+  public static final int IEQ    = 5;      // Int equal
+  public static final int BR     = 6;      // Branch
+  public static final int BRT    = 7;      // Branch if true
+  public static final int BRF    = 8;      // Branch if false
+  public static final int ICONST = 9;      // Push constant int
+  public static final int LOAD   = 10;     // Load local var
+  public static final int GLOAD  = 11;     // Load global var
+  public static final int STORE  = 12;     // Store local var
+  public static final int GSTORE = 13;     // Store global var
+  public static final int PRINT  = 14;     // Print stack top and pop
+  public static final int POP    = 15;     // Throw away top of stack
+  public static final int HALT   = 16;     // exit program
+  public static final int CALL   = 17;     // call function
+  public static final int RET    = 18;     // Return from function
 
   public static class Instruction {
     String name;
