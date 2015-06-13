@@ -18,6 +18,8 @@ public class Bytecode {
   public static final int PRINT  = 14; // print stack top
   public static final int POP    = 15; // throw away top of stack
   public static final int HALT   = 16; // Exit program
+  public static final int CALL   = 17; // Call function
+  public static final int RET    = 18; // Return from function
 
   public static class Instruction {
     String name;
@@ -46,7 +48,9 @@ public class Bytecode {
     new Instruction("GSTORE", 1),
     new Instruction("PRINT"),
     new Instruction("POP"),
-    new Instruction("HALT")
+    new Instruction("HALT"),
+    new Instruction("CALL", 2),
+    new Instruction("RET")
   };
 
 }

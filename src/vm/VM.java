@@ -109,6 +109,26 @@ public class VM {
           if (trace) dumpDataMemory();
           return;
 
+        case CALL:
+          addr = code[ip++];
+          int nargs = code[ip++];
+          stack[++sp] = nargs;
+          stack[++sp] = fp;
+          stack[++sp] = ip;
+          fp = sp;
+          ip = addr;
+          break;
+
+        case RET:
+          int rvalue = stack[sp--];
+          sp = fp;
+          ip = stack[sp--];
+          fp = stack[sp--];
+          nargs = stack[sp--];
+          sp -= nargs;
+          stack[++sp] = rvalue;
+          break;
+
         default:
           throw new Error("Invalid opcode: " + opcode + ".");
       }
