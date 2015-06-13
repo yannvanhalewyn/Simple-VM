@@ -40,6 +40,38 @@ public class Test {
     RET
   };
 
+  static int[] divide = {
+    // Def DIV(x, y) x is at fp-4, y is at fp-3
+    LOAD, -4,       // 0
+    LOAD, -3,       // 2
+    ILT,            // 4
+    BRF, 10,        // 5
+    GLOAD, 0,       // 7
+    RET,            // 9
+
+    // Increment counter
+    GLOAD, 0,       // 10
+    ICONST, 1,      // 12
+    IADD,           // 14
+    GSTORE, 0,      // 15
+    // DIV(x-y, y)
+    LOAD, -4,       // 17
+    LOAD, -3,       // 19
+    ISUB,           // 21
+    LOAD, -3,       // 22
+    CALL, 0, 2,     // 24
+    RET,            // 27
+
+                    // MAIN
+    ICONST, 12,     // 28
+    ICONST, 4,      // 30
+    ICONST, 0,      // 32 (Global counter Counter)
+    GSTORE, 0,      // 34
+    CALL, 0, 2,     // 36
+    PRINT,          // 39
+    HALT            // 40
+  };
+
   // Returns the factorial of input (mem addr 23)
   // SETUP: mainip = 22, datasize = 0
   static int[] factorial = {
@@ -73,7 +105,7 @@ public class Test {
     LOAD, -3,                      // 0
     ICONST, 3,                     // 2,
     ILT,                           // 4
-    BRF, 10,                       // 5
+    BRT, 10,                       // 5
     ICONST, 1,                     // 7
     RET,                           // 9
 
@@ -105,11 +137,11 @@ public class Test {
  * ====
  */
   public static void main(String[] args) {
-    int dataSize = 0;
+    int dataSize = 1;
     int stackSize = 100;
     int mainip = 28;
-    VM vm = new VM(fibonacci, mainip, dataSize, stackSize);
-    vm.trace = false;
+    VM vm = new VM(divide, mainip, dataSize, stackSize);
+    vm.trace = true;
     vm.cpu();
   }
 
