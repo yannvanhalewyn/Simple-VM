@@ -16,18 +16,20 @@ public class VM {
 
   boolean trace = false;
 
-  public VM(int[] code, int main, int dataSize) {
+  public VM(int[] code, int main, int dataSize, int stackSize) {
     this.code = code;
     this.ip = main;
     this.globals = new int[dataSize];
-    stack = new int[100];
+    stack = new int[stackSize];
   }
 
   public void cpu() {
     while (ip < code.length) {
+
       if (trace) {
         System.err.printf("%-30s", dissassemble());
       }
+
       int opcode = code[ip++];
       switch(opcode) {
 
@@ -44,7 +46,11 @@ public class VM {
           break;
 
         case IMUL:
+          b = stack[sp--];
+          a = stack[sp--];
+          stack[++sp] = a * b;
           break;
+
         case ILT:
           b = stack[sp--];
           a = stack[sp--];
