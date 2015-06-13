@@ -76,6 +76,8 @@ public class VM {
           break;
 
         case LOAD:
+          int offset = code[ip++];
+          stack[++sp] = stack[fp + offset];
           break;
 
         case GLOAD:
@@ -85,6 +87,8 @@ public class VM {
           break;
 
         case STORE:
+          offset = code[ip++];
+          stack[fp+offset] = stack[sp--];
           break;
 
         case GSTORE:
@@ -98,11 +102,15 @@ public class VM {
           break;
 
         case POP:
+          sp--;
           break;
 
         case HALT:
           if (trace) dumpDataMemory();
           return;
+
+        default:
+          throw new Error("Invalid opcode: " + opcode + ".");
       }
       if (trace) System.err.println(stackString());
     }
