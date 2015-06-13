@@ -3,7 +3,7 @@ package vm;
 import static vm.Bytecode.*;
 
 public class VM {
-  int[] data;
+  int[] globals;
   int[] code;
   int[] stack;
 
@@ -11,12 +11,15 @@ public class VM {
   int sp = -1;
   int fp;
 
+  static final int TRUE = 1;
+  static final int FALSE = 0;
+
   boolean trace = false;
 
   public VM(int[] code, int main, int dataSize) {
     this.code = code;
     this.ip = main;
-    this.data = new int[dataSize];
+    this.globals = new int[dataSize];
     stack = new int[100];
   }
 
@@ -35,18 +38,37 @@ public class VM {
           break;
 
         case ISUB:
+          b = stack[sp--];
+          a = stack[sp--];
+          stack[++sp] = a - b;
           break;
+
         case IMUL:
           break;
         case ILT:
+          b = stack[sp--];
+          a = stack[sp--];
+          stack[++sp] = (a < b) ? TRUE : FALSE;
           break;
+
         case IEQ:
+          b = stack[sp--];
+          a = stack[sp--];
+          stack[++sp] = (a == b) ? TRUE : FALSE;
           break;
+
         case BR:
+          ip = code[ip++];
           break;
+
         case BRT:
+          int addr = code[ip++];
+          if(stack[sp--] == TRUE) ip = addr;
           break;
+
         case BRF:
+          addr = code[ip++];
+          if(stack[sp--] == FALSE) ip = addr;
           break;
 
         case ICONST:
@@ -57,30 +79,32 @@ public class VM {
           break;
 
         case GLOAD:
-          stack[++sp] = data[code[ip++]];
+          addr = code[ip++];
+          int v = globals[addr];
+          stack[++sp] = v;
           break;
 
         case STORE:
           break;
 
         case GSTORE:
-          data[code[ip++]] = stack[sp--];
+          v = stack[sp--];
+          addr = code[ip++];
+          globals[addr] = v;
           break;
 
         case PRINT:
-          System.out.println("\n" +stack[sp--]);
+          System.out.println(stack[sp--]);
           break;
 
         case POP:
           break;
 
         case HALT:
-          System.out.println();
+          if (trace) dumpDataMemory();
           return;
       }
-      if (trace) {
-        System.err.println(stackString());
-      }
+      if (trace) System.err.println(stackString());
     }
   }
 
@@ -105,4 +129,13 @@ public class VM {
     return buf.toString();
   }
 
+  private void dumpDataMemory() {
+    System.err.println("\nData memory:");
+    int addr = 0;
+    for (int o : globals) {
+      System.out.printf("%04d: %s\n", addr, o);
+      addr++;
+    }
+    System.err.println();
+  }
 }
